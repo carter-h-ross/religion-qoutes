@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map_maker</title>
+</head>
+
+<style>
+
+    body {
+        overflow: hidden; /* Hide scrollbars */
+    }
+
+    .video-container{
+        width: 100vw;
+        height: 100vh;
+    }     
+    iframe {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100vw;
+        height: 100vh;
+        transform: translate(-50%, -50%);
+    }
+    @media (min-aspect-ratio: 16/9) {
+        .video-container iframe {
+          /* height = 100 * (9 / 16) = 56.25 */
+          height: 56.25vw;
+        }
+    }
+          
+    @media (max-aspect-ratio: 16/9) {
+        .video-container iframe {
+          /* width = 100 / (9 / 16) = 177.777777 */
+          width: 177.78vh;
+        }
+    }
+
+    #text{
+        position: absolute;
+        text-align: center;
+        color: #FFFFFF;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+      
+</style>
+
+<body>
+
+    <div class="video-container">
+        <iframe id="videoFrame" src="https://www.youtube.com/embed/ccAWioDHgQM?&autoplay=1&mute=1&playsinline=1&loop=1"></iframe>
+    </div>
+
+    <div id="text">    
+        <h1>"So much life was taken, but grateful for all that's been given" - Jon Dorenbos</h1>
+    </div> 
+
+    <script>
+        const videos = [
+            'ccAWioDHgQM',
+            '9lTSqc1UnLU',
+            'u-ApxFOpl28',
+        ];
+
+        const quotes = [
+            "\"So much life was taken, but grateful for all that's been given\" - Jon Dorenbos",
+            "\"to see things in a humorous light is some kind of trick learned while mastering the art of living\"<br>- Victor Frankl",
+            "\" It is secularism that attempts to squash at every turn the longing of the human heart for a world beyond the what is presented to our senses. \""
+        ];
+
+        let currentIndex = 0;
+
+        function loadContent(index) {
+            const videoFrame = document.getElementById('videoFrame');
+            videoFrame.src = `https://www.youtube.com/embed/${videos[index]}?&autoplay=1&mute=1&playsinline=1&loop=1`;
+
+            const textElement = document.getElementById('text');
+            textElement.innerHTML = `<h1>${quotes[index]}</h1>`;
+        }
+
+        function handleKeyPress(event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+                    loadContent(currentIndex);
+                    break;
+                case 'ArrowRight':
+                    currentIndex = (currentIndex + 1) % videos.length;
+                    loadContent(currentIndex);
+                    break;
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyPress);
+
+        loadContent(currentIndex);
+    </script>
+
+</body>
+
+</html>
